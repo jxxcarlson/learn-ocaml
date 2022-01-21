@@ -8,6 +8,8 @@
 *)
 (* val fold_left : ('a -> 'b -> 'a) -> 'a -> 'b list -> 'a *)
 
+open List;;
+
 (* Sum of a list of floats. *)
 let rec sum (xs : float list): float = 
   match xs with
@@ -15,11 +17,12 @@ let rec sum (xs : float list): float =
      | (x::rest) -> x +. sum rest
 ;;
 
-let allocations (xs : float list) : float list = 
+let allocation (xs : float list) : float list = 
   let 
     total = sum xs
   in 
   map (fun (x: float) -> x /. total) xs;;
+
 
 
 (*
@@ -40,8 +43,27 @@ let trade_for_allocation (assets: float list) (target_allocation: float list) =
   map2 (delta total) assets target_allocation;;
 
 
+let data = Array.length Sys.argv ;;
+let n_args = Array.length Sys.argv ;;
+
+let raw_assets = Array.sub Sys.argv 1 (n_args / 2);;
+let allocations = allocation (map Float.of_string (Array.to_list raw_assets));;
+
+let raw_target_allocations = Array.sub Sys.argv (1 + (n_args/2)) (n_args / 2);;
+let assets = map Float.of_string (Array.to_list raw_assets) ;;
+let target_allocations = map Float.of_string (Array.to_list raw_target_allocations) ;;
+
+let trades = map Float.to_int (trade_for_allocation assets target_allocations);;
 
 
-for i = 0 to Array.length Sys.argv - 1 do
+Printf.printf "\n\nCurrent allocation\n------------------\n";;
+List.iter (Printf.printf  "%10.3f\n") allocations;;
+Printf.printf "\n";;
+
+Printf.printf "Trades\n------------------\n";;
+List.iter (Printf.printf  "%10d\n") trades;;
+Printf.printf "\n";;
+
+(* for i = 0 to length assets - 1 do
   Printf.printf "[%i] %s\n" i Sys.argv.(i)
-done
+done *)
