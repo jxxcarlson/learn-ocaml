@@ -63,6 +63,17 @@ let target_allocations = map Float.of_string (Array.to_list raw_target_allocatio
 
 let trades = map Float.to_int (trade_for_allocation assets target_allocations);;
 
+let readlines file = let ic = open_in file in 
+let rec aux() = 
+  try let s = input_line ic in s :: aux() with  
+  End_of_file -> []
+in aux()
+
+let n = List.length (readlines "assets.txt");;
+
+Printf.printf  "Read %1d lines\n" n;;
+
+
 
 Printf.printf "\n\nCurrent allocation\n------------------\n";;
 List.iter (Printf.printf  "%10.3f\n") allocations;;
