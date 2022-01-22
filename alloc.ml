@@ -14,7 +14,7 @@ type data_record = { item: string; value: float; allocation: float} ;;
 
 let print_record d  =
     (* Printf.printf "%10s       %10.0f %6.2f\n" d.item d.value d.allocation ;; *)
-        Printf.printf "%10.0f %6.2f\n" d.value d.allocation ;;
+        Printf.printf "%*s %6.0f %6.2f\n" (-16) d.item  d.value d.allocation ;;
 
 let readlines file = let ic = open_in file in 
 let rec aux() = 
@@ -33,7 +33,7 @@ let splitter s = s
 let assemble (str: string) : data_record
   = match splitter str with 
       (first :: second :: third :: []) -> { item = first; value = Float.of_string second; allocation = Float.of_string third; }
-
+       (* default -> { item = "Bad data"; value = 0.0; allocation = 0.0; } *)
     ;;
 
 let data = readlines "assets.txt" |> List.map assemble
