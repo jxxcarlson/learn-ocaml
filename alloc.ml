@@ -16,6 +16,19 @@ open List;;
   In_channel.close file;
   strings *)
 
+let readlines file = let ic = open_in file in 
+let rec aux() = 
+  try let s = input_line ic in s :: aux() with  
+  End_of_file -> []
+in aux()
+
+
+
+let n = List.length (readlines "assets.txt");;
+
+Printf.printf  "\nRead %1d lines\n" n;;
+
+
 (* Sum of a list of floats. *)
 let rec sum (xs : float list): float = 
   match xs with
@@ -63,15 +76,7 @@ let target_allocations = map Float.of_string (Array.to_list raw_target_allocatio
 
 let trades = map Float.to_int (trade_for_allocation assets target_allocations);;
 
-let readlines file = let ic = open_in file in 
-let rec aux() = 
-  try let s = input_line ic in s :: aux() with  
-  End_of_file -> []
-in aux()
 
-let n = List.length (readlines "assets.txt");;
-
-Printf.printf  "Read %1d lines\n" n;;
 
 
 
