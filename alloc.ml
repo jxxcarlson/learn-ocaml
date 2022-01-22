@@ -10,6 +10,12 @@
 
 open List;;
 
+(* let read_file_to_strings "assets.txt" =
+  let file = In_channel.create filename in
+  let strings = In_channel.input_lines file in
+  In_channel.close file;
+  strings *)
+
 (* Sum of a list of floats. *)
 let rec sum (xs : float list): float = 
   match xs with
@@ -42,6 +48,8 @@ let trade_for_allocation (assets: float list) (target_allocation: float list) =
   in
   map2 (delta total) assets target_allocation;;
 
+
+(* let r file = In_channel.read_lines file *)
 
 let data = Array.length Sys.argv ;;
 let n_args = Array.length Sys.argv ;;
