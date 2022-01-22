@@ -11,10 +11,16 @@
 open List;;
 
 type data_record = { item: string; value: float; allocation: float} ;;
+type extended_data_record = { item: string; value: float; allocation: float; actual_allocation: float; trade: float; } ;;
 
-let print_record d  =
+let print_record (d :  data_record) : unit  =
     (* Printf.printf "%10s       %10.0f %6.2f\n" d.item d.value d.allocation ;; *)
         Printf.printf "%*s %6.0f %6.2f\n" (-16) d.item  d.value d.allocation ;;
+
+
+let print_extended_record (d :  extended_data_record) : unit  =
+        Printf.printf "%*s %6.0f %6.2f %6.2f %8.2f\n" (-16) d.item  d.value d.allocation d.actual_allocation d.trade;;
+
 
 let readlines file = let ic = open_in file in 
 let rec aux() = 
@@ -72,13 +78,29 @@ let trade_for_allocation (assets: float list) (target_allocation: float list) =
   map2 (delta total) assets target_allocation;;
 
 
-
 let assets = List.map (fun (r: data_record) -> r.value) data;;
 let allocations = allocation assets;;
 
 let target_allocations = List.map (fun (d: data_record)-> d.allocation ) data;;
+let trades = trade_for_allocation assets target_allocations;;
 
-let trades = map Float.to_int (trade_for_allocation assets target_allocations);;
+let pair a b = (a, b);;
+
+let newData = List.map2 pair allocations trades;;
+
+(* let extendDatum (data: data_record) (newData : (float, float) ) : extended_data_record = *)
+let extendDatum (datum: data_record) (newDatum: (float * float)) : extended_data_record =
+  let 
+    (a, b) = newDatum
+  in
+  { item = datum.item; value = datum.value; allocation = datum.allocation; actual_allocation = a; trade = b; }  ;;
 
 
-List.iter print_record data;;
+
+let extendData (data: data_record list) (newData: (float * float) list): extended_data_record list =
+   List.map2 extendDatum data newData;;
+
+
+List.iter print_extended_record (extendData data newData);; 
+
+(* List.iter print_record data;; *)
