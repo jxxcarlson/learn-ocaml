@@ -18,8 +18,11 @@ let print_record (d :  data_record) : unit  =
         Printf.printf "%*s %6.0f %6.2f\n" (-16) d.item  d.value d.allocation ;;
 
 
-let print_extended_record (d :  extended_data_record) : unit  =
-        Printf.printf "%*s %6.0f %6.2f %6.2f %8.2f\n" (-16) d.item  d.value d.allocation d.actual_allocation d.trade;;
+let print_header () : unit  =
+        Printf.printf "%*s %6.0s %6s %6s %10*s\n" "Item" "Amount" "%%"  "Actual" ) "Trade";;
+ 
+let print_extended_record (d: extended_data_record) : unit  =
+        Printf.printf  "%*s %6.0f %6.2f %6.2f %8.2f\n" (-16) d.item  d.value d.allocation d.actual_allocation d.trade;;
 
 
 let readlines file = let ic = open_in file in 
@@ -101,6 +104,7 @@ let extendData (data: data_record list) (newData: (float * float) list): extende
    List.map2 extendDatum data newData;;
 
 
+print_header();;
 List.iter print_extended_record (extendData data newData);; 
 
 (* List.iter print_record data;; *)
