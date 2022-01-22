@@ -10,11 +10,11 @@
 
 open List;;
 
-(* let read_file_to_strings "assets.txt" =
-  let file = In_channel.create filename in
-  let strings = In_channel.input_lines file in
-  In_channel.close file;
-  strings *)
+type data_record = { item: string; value: float; allocation: float} ;;
+
+let print_record d  =
+    (* Printf.printf "%10s       %10.0f %6.2f\n" d.item d.value d.allocation ;; *)
+        Printf.printf "%10.0f %6.2f\n" d.value d.allocation ;;
 
 let readlines file = let ic = open_in file in 
 let rec aux() = 
@@ -23,10 +23,21 @@ let rec aux() =
 in aux()
 
 
+let splitter s = s 
+   |> String.split_on_char ',' 
+   |> List.filter (fun s -> s <> "") 
 
-let n = List.length (readlines "assets.txt");;
 
-Printf.printf  "\nRead %1d lines\n" n;;
+
+
+let assemble (str: string) : data_record
+  = match splitter str with 
+      (first :: second :: third :: []) -> { item = first; value = Float.of_string second; allocation = Float.of_string third; }
+
+    ;;
+
+let data = readlines "assets.txt" |> List.map assemble
+
 
 
 (* Sum of a list of floats. *)
@@ -48,7 +59,6 @@ let allocation (xs : float list) : float list =
 # trade_for_allocation [100.0; 100.0] [0.5; 0.5];;
 - : float list = [0.; 0.]
 
-# trade_for_allocation [100.0; 100.0] [0.6; 0.4];;
 - : float list = [-20.; 20.]
 
 
@@ -62,32 +72,13 @@ let trade_for_allocation (assets: float list) (target_allocation: float list) =
   map2 (delta total) assets target_allocation;;
 
 
-(* let r file = In_channel.read_lines file *)
 
-let data = Array.length Sys.argv ;;
-let n_args = Array.length Sys.argv ;;
+let assets = List.map (fun (r: data_record) -> r.value) data;;
+let allocations = allocation assets;;
 
-let raw_assets = Array.sub Sys.argv 1 (n_args / 2);;
-let allocations = allocation (map Float.of_string (Array.to_list raw_assets));;
-
-let raw_target_allocations = Array.sub Sys.argv (1 + (n_args/2)) (n_args / 2);;
-let assets = map Float.of_string (Array.to_list raw_assets) ;;
-let target_allocations = map Float.of_string (Array.to_list raw_target_allocations) ;;
+let target_allocations = List.map (fun (d: data_record)-> d.allocation ) data;;
 
 let trades = map Float.to_int (trade_for_allocation assets target_allocations);;
 
 
-
-
-
-Printf.printf "\n\nCurrent allocation\n------------------\n";;
-List.iter (Printf.printf  "%10.3f\n") allocations;;
-Printf.printf "\n";;
-
-Printf.printf "Trades\n------------------\n";;
-List.iter (Printf.printf  "%10d\n") trades;;
-Printf.printf "\n";;
-
-(* for i = 0 to length assets - 1 do
-  Printf.printf "[%i] %s\n" i Sys.argv.(i)
-done *)
+List.iter print_record data;;
