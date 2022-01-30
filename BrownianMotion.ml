@@ -1,22 +1,36 @@
 open Graphics
 
+(*  
+
+  USAGE EXAMPLE:
+
+  $ ./BrownianMotion.native 194716 
+
+  where 194716 seeds the random number generator.
+
+*)
+
+
+(* COLORS *)
 let white = rgb 255 255 255
 let bgColor  = rgb 0 0 0
 let blue = rgb 0 0 255
 let red = rgb 255 0 0
 
+(* WINDOW DIMENSIONS *)
+let ww = 800
+let wh = 800
+
+
 (* WINDOW TOOLS *)
 
-(* no function for converting color back to rgb in Graphics *)
-let color_to_rgb color =
-    let r = (color land 0xFF0000) asr 0x10
-    and g = (color land 0x00FF00) asr 0x8
-    and b = (color land 0x0000FF)
-    in r, g, b
 
+let openWindowString w h = 
+ String.concat "" [ " "; string_of_int w;  "x";  string_of_int h ];;
+ 
 let open_window = 
-    open_graph " 640x480";
-    set_window_title "Brownian Motion"
+    open_graph (openWindowString ww wh);
+    set_window_title "Brownian Motion"  
 
 (* no way of setting background color; resizing shows white *)
 let clear_window color = 
@@ -31,7 +45,6 @@ let clear_window color =
 
 type point = { x: int; y: int}
 
-
 let rec make_random_points' (x:int) (y:int) (dx:int) (dy:int) (n:int) (list: point list): point list = 
   if n = 0 then 
     {x = x; y = y }::list
@@ -41,27 +54,27 @@ let rec make_random_points' (x:int) (y:int) (dx:int) (dy:int) (n:int) (list: poi
   make_random_points' x' y' dx dy (n - 1) ({x = x; y = y}::list)
   ;;
 
-
 let make_random_points x y dx dy n seed = 
-  let 
-   foo = Random.init seed
-  in
-  make_random_points' x y dx dy n [];; 
+   Random.init seed;
+   make_random_points' x y dx dy n [];; 
 
 
 (* TOOLS FOR RENDERING A BROWNIAN PATH *)
-let render_circle point = 
-   let 
-    () = set_color red
-   in fill_circle point.x point.y 2 ;;
- 
 
+let render_circle point =  
+    fill_circle point.x point.y 2 ;;
+ 
+let render_points (points: point list) = 
+  set_color red;
+  List.iter render_circle points;;
 
 (* PROGRAM *)
 
+(* Get random seed *)
+let seed' = int_of_string Sys.argv.(1);; 
 
-let seed' = int_of_string Sys.argv.(1);;
-let random_points = make_random_points 320 240 10 10 500 seed';; 
+(* Compute Brownian path *)
+let random_points = make_random_points (ww/2) (wh/2) 15 15 500 seed';; 
 
 let rec event_loop wx wy = 
     (* there's no resize event so polling in required *)
@@ -71,24 +84,14 @@ let rec event_loop wx wy =
         if wx' <> wx || wy' <> wy then 
             begin 
                 clear_window bgColor;
-                List.iter render_circle random_points;
-                set_color blue;
-                fill_circle 320 240 4;
+                render_points random_points;
+                set_color blue; 
+                fill_circle (ww/2) (wh/2    ) 5;
             end;
         Unix.sleep 1;
         event_loop wx' wy'
 
-
-
-let seed = Random.init seed';;
-let () = Printf.printf "seed = %d\n" seed' ;;
-
-(* let seed' = Float.of_string Sys.argv.(1);; *)
-
 let () =
-       open_window;
-    let r,g,b = color_to_rgb background
-    in  
-        Printf.printf "Background color: %d %d %d\n" r g b;
-        try event_loop 0 0 
+        open_window; 
+        try event_loop 0 0 ;
         with Graphic_failure _ -> print_endline "Exiting..."
