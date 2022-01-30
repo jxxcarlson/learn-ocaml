@@ -1,0 +1,9 @@
+scripts:
+
+  compile: ocamlbuild -package graphics -package unix BrownianMotion.native
+ 
+  go: ./BrownianMotion.native
+
+  compile1: ocamlbuild -package graphics -package unix GraphicsExample.native
+ 
+  run1: ./GraphicsExample.native

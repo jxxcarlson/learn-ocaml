@@ -31,7 +31,7 @@ let print_divider () : unit  =
        Printf.printf "%s" "-------------------------------------------------\n";;
  
 let print_extended_record (d: extended_data_record) : unit  =
-        Printf.printf  "%*s %6.0f %6.2f %6.2f %8.2f\n" (-16) d.item  d.value d.allocation d.actual_allocation d.trade;;
+        Printf.printf  "%*s %6.0f %6.2f %6.3f %8.2f\n" (-16) d.item  d.value d.allocation d.actual_allocation d.trade;;
 
 
 
