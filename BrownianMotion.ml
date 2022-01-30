@@ -2,6 +2,9 @@ open Graphics
 
 (*  
 
+  Given a seed for the random number generator, this program
+  computes, then displyas, a Brownian path.
+
   USAGE EXAMPLE:
 
   $ ./BrownianMotion.native 194716 
@@ -9,7 +12,6 @@ open Graphics
   where 194716 seeds the random number generator.
 
 *)
-
 
 (* COLORS *)
 let white = rgb 255 255 255
@@ -20,6 +22,11 @@ let red = rgb 255 0 0
 (* WINDOW DIMENSIONS *)
 let ww = 800
 let wh = 800
+
+(* Parameters for Brownian motion *)
+
+let step_size = 15;;
+let number_of_steps = 500;;
 
 
 (* WINDOW TOOLS *)
@@ -74,7 +81,7 @@ let render_points (points: point list) =
 let seed' = int_of_string Sys.argv.(1);; 
 
 (* Compute Brownian path *)
-let random_points = make_random_points (ww/2) (wh/2) 15 15 500 seed';; 
+let random_points = make_random_points (ww/2) (wh/2) step_size step_size number_of_steps seed';; 
 
 let rec event_loop wx wy = 
     (* there's no resize event so polling in required *)
