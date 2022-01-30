@@ -4,6 +4,4 @@ scripts:
  
   go: ./BrownianMotion.native
 
-  compile1: ocamlbuild -package graphics -package unix GraphicsExample.native
- 
-  run1: ./GraphicsExample.native
+  alloc: ocaml alloc.ml assets.txt
