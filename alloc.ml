@@ -1,12 +1,6 @@
 (*
-    https://ocaml.org/learn/tutorials/command-line_arguments.html
-    $ ocaml args.ml a b c
-    [0] args.ml
-    [1] a
-    [2] b
-    [3] c
+    USAGE: ocaml alloc.ml assets.txt
 *)
-(* val fold_left : ('a -> 'b -> 'a) -> 'a -> 'b list -> 'a *)
 
 open List;;
 
