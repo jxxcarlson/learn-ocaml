@@ -26,7 +26,8 @@ let wh = 800
 (* Parameters for Brownian motion *)
 
 let step_size = 15;;
-let number_of_steps = 500;;
+let number_of_steps = 1000;;
+let circle_radius = 5;;
 
 
 (* WINDOW TOOLS *)
@@ -93,7 +94,7 @@ let rec event_loop wx wy =
                 clear_window bgColor;
                 render_points random_points;
                 set_color blue; 
-                fill_circle (ww/2) (wh/2    ) 5;
+                fill_circle (ww/2) (wh/2) circle_radius;
             end;
         Unix.sleep 1;
         event_loop wx' wy'
