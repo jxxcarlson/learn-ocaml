@@ -11,7 +11,7 @@ This repo has two programs for simulating Brownian motion. They are written in O
 
 - a Brownian path: a particle starts at the origin and makes N random moves; the particle is displayed at each step
 
-- a Brownian cloud: M particles start at the origin and make N random steps; the final position of each is displayed
+- a Brownian cloud: M particles start at the origin and make N random steps; the final position of each is displayed. The particle positions are normally distributed.
 
 The parameters M and N can be set in the program.
 
