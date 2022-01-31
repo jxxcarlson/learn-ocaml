@@ -1,6 +1,6 @@
 # Learning OCaml
 
-This repo contains programs that I am writing as an exercises in learning OCaml.
+This repo contains programs that I am writing as an exercise in learning OCaml.
 The first is a program for simulating Brownian motion.  The second analyzes
 the asset allocation of an investment portfolio with given assets and allocations. It returns recommendations on what to buy and sell to satisfy
 the allocation constraint.
