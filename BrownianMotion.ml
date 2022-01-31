@@ -25,9 +25,11 @@ let wh = 800
 
 (* Parameters for Brownian motion *)
 
-let step_size = 15;;
+let step_size = 10;;
 let number_of_steps = 1000;;
-let circle_radius = 5;;
+let number_of_steps_in_cloud = 200;;
+let points_in_cloud = 3000;;
+let circle_radius = 2;;
 
 
 (* WINDOW TOOLS *)
@@ -53,18 +55,28 @@ let clear_window color =
 
 type point = { x: int; y: int}
 
-let rec make_random_points' (x:int) (y:int) (dx:int) (dy:int) (n:int) (list: point list): point list = 
-  if n = 0 then 
+let rec brownian_path' (x:int) (y:int) (dx:int) (dy:int) (path_length:int) (list: point list): point list = 
+  if path_length = 0 then 
     {x = x; y = y }::list
   else 
-  let x' = x + (Random.int (2 * dx) ) - dx in
-  let y' = y + (Random.int (2 * dy) ) - dy in
-  make_random_points' x' y' dx dy (n - 1) ({x = x; y = y}::list)
+  let x' = x + (int_of_float (Random.float (2.0 *. float_of_int dx) )) - dx in
+  let y' = y + (int_of_float (Random.float (2.0 *. float_of_int dy) )) - dy in
+  brownian_path' x' y' dx dy (path_length - 1) ({x = x; y = y}::list)
   ;;
 
-let make_random_points x y dx dy n seed = 
-   Random.init seed;
-   make_random_points' x y dx dy n [];; 
+let brownian_path x y dx dy path_length = 
+   Random.self_init ();
+   brownian_path' x y dx dy path_length [];; 
+
+let rec brownian_cloud' x y dx dy path_length number_of_points point_cloud = 
+  if number_of_points = 0 then
+     point_cloud
+  else
+     let end_point = List.hd (brownian_path x y dx dy path_length)
+     in brownian_cloud' x y dx dy path_length (number_of_points - 1) (end_point :: point_cloud)
+
+let brownian_cloud x y dx dy path_length number_of_points =
+   brownian_cloud' x y dx dy path_length number_of_points [] 
 
 
 (* TOOLS FOR RENDERING A BROWNIAN PATH *)
@@ -72,17 +84,24 @@ let make_random_points x y dx dy n seed =
 let render_circle point =  
     fill_circle point.x point.y 2 ;;
  
-let render_points (points: point list) = 
-  set_color red;
+let render_points color (points: point list) = 
+  set_color color;
   List.iter render_circle points;;
 
 (* PROGRAM *)
 
-(* Get random seed *)
-let seed' = int_of_string Sys.argv.(1);; 
-
 (* Compute Brownian path *)
-let random_points = make_random_points (ww/2) (wh/2) step_size step_size number_of_steps seed';; 
+let random_points = brownian_path (ww/2) (wh/2) step_size step_size number_of_steps;;
+let cloud = brownian_cloud (ww/2) (wh/2) step_size step_size number_of_steps_in_cloud points_in_cloud;;
+
+
+let string_of_point point = 
+  String.concat ", " [string_of_int point.x ;  string_of_int point.y] ;;
+
+ 
+Printf.printf "cloud: %d\n" (List.length cloud);;
+List.iter (fun pt -> Printf.printf "%s\n" (string_of_point pt)) cloud;;
+
 
 let rec event_loop wx wy = 
     (* there's no resize event so polling in required *)
@@ -92,8 +111,9 @@ let rec event_loop wx wy =
         if wx' <> wx || wy' <> wy then 
             begin 
                 clear_window bgColor;
-                render_points random_points;
-                set_color blue; 
+                render_points blue cloud;
+                render_points red random_points;
+                set_color white; 
                 fill_circle (ww/2) (wh/2) circle_radius;
             end;
         Unix.sleep 1;
