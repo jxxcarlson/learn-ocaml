@@ -1,7 +1,7 @@
 scripts:
 
-  compile: ocamlbuild -package graphics -package unix BrownianMotion.native
+  compile: ocamlbuild -package graphics -package unix BrownianMotion2.native
  
-  go: ./BrownianMotion.native
+  go: ./BrownianMotion2.native
 
   alloc: ocaml alloc.ml assets.txt

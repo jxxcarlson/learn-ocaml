@@ -26,6 +26,7 @@ let wh = 800
 (* Parameters for Brownian motion *)
 
 let step_size = 10;;
+let color_step_size = 6;;
 let number_of_steps = 4000;;
 let number_of_steps_in_cloud = 200;;
 let points_in_cloud = 3000;;
@@ -53,46 +54,54 @@ let clear_window color =
 
 (* COMPUTING A BROWNIAN PATH *)
 
-type point = { x: int; y: int}
+type point = { x: int; y: int; r: int; g: int; b: int}
 
-let rec brownian_path' (x:int) (y:int) (dx:int) (dy:int) (path_length:int) (list: point list): point list = 
+let roll k = if k > 255 then 0 else if k < 0 then 255 else k
+
+let rec brownian_path' (point: point) (path_length: int) (list: point list) : point list = 
   if path_length = 0 then 
-    {x = x; y = y }::list
+    list
   else 
-  let x' = x + (Random.int (2 * dx + 1)) - dx in
-  let y' = y + (Random.int (2 * dy + 1)) - dy in
-  brownian_path' x' y' dx dy (path_length - 1) ({x = x'; y = y'}::list)
+  let x' = point.x + (Random.int (2 * step_size + 1)) - step_size in
+  let y' = point.y + (Random.int (2 * step_size + 1)) - step_size in
+  let r' = point.r + (Random.int (2 * color_step_size + 1)) - color_step_size |> roll in
+  (* let g' = point.g + (Random.int (2 * color_step_size + 1)) - color_step_size |> roll in *)
+  let b' = point.b + (Random.int (2 * color_step_size + 1)) - color_step_size|> roll in
+  let point' = {x = x'; y = y'; r = r'; g = point.g; b = b'} in
+  brownian_path' point'(path_length - 1) (point'::list)
   ;;
 
-let brownian_path x y dx dy path_length = 
+let brownian_path point path_length = 
    Random.self_init ();
-   brownian_path' x y dx dy path_length [];; 
+   brownian_path' point path_length [];; 
 
-let rec brownian_cloud' x y dx dy path_length number_of_points point_cloud = 
+let rec brownian_cloud' point path_length number_of_points point_cloud = 
   if number_of_points = 0 then
      point_cloud
   else
-     let end_point = List.hd (brownian_path x y dx dy path_length)
-     in brownian_cloud' x y dx dy path_length (number_of_points - 1) (end_point :: point_cloud)
+     let end_point' = List.hd (brownian_path point path_length) in
+     let end_point = {x = end_point'.x; y = end_point'.y; r = 80; g = 80; b = 140} in
+     brownian_cloud' point path_length (number_of_points - 1) (end_point :: point_cloud)
 
-let brownian_cloud x y dx dy path_length number_of_points =
-   brownian_cloud' x y dx dy path_length number_of_points [] 
+let brownian_cloud point path_length number_of_points =
+   brownian_cloud' point path_length number_of_points [] 
 
 
 (* TOOLS FOR RENDERING A BROWNIAN PATH *)
 
 let render_circle point =  
+    set_color (rgb point.r point.g point.b);
     fill_circle point.x point.y 2 ;;
  
-let render_points color (points: point list) = 
-  set_color color;
+let render_points (points: point list) = 
   List.iter render_circle points;;
 
 (* PROGRAM *)
 
 (* Compute Brownian path *)
-let random_points = brownian_path (ww/2) (wh/2) step_size step_size number_of_steps;;
-let cloud = brownian_cloud (ww/2) (wh/2) step_size step_size number_of_steps_in_cloud points_in_cloud;;
+let origin = {x = ww/2; y = wh/2; r = 125; g = 0; b = 125};;
+let path = brownian_path origin number_of_steps;;
+let cloud = brownian_cloud origin number_of_steps_in_cloud points_in_cloud;;
 
 
 let rec event_loop wx wy = 
@@ -103,8 +112,8 @@ let rec event_loop wx wy =
         if wx' <> wx || wy' <> wy then 
             begin 
                 clear_window bgColor;
-                render_points blue cloud;
-                render_points red random_points;
+                render_points cloud;
+                render_points path;
                 set_color white; 
                 fill_circle (ww/2) (wh/2) circle_radius;
             end;
