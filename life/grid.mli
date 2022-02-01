@@ -18,7 +18,9 @@ val getCell' :int -> int ->  grid -> cell
 
 val putCell : int -> int -> cell -> grid -> grid
 
-val display : grid -> ()
+val displayCell : (int * int) -> int -> int -> cell -> unit
+
+val display: grid -> int -> int -> unit
 
 (* val updateAt : int -> int -> grid -> grid *)
 

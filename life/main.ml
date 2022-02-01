@@ -29,7 +29,10 @@ let clear_window color =
 
 (* RENDERING  *)
 
-let foo = Grid.init Dead |> putCell 15 15 Alive;;
+let foo = Grid.init Dead 
+       |> putCell 15 15 Alive 
+       |> putCell 10 10 Alive 
+       |> putCell 0 0 Alive;;
 
 let render_circle x y radius r g b =  
     set_color (rgb r g b);
@@ -44,10 +47,11 @@ let rec event_loop wx wy =
     and wx' = size_x () and wy' = size_y ()
     in 
         if wx' <> wx || wy' <> wy then 
-            begin 
+            begin     
                 clear_window bgColor;
                 set_color white; 
                 render_circle (ww/2) (wh/2) 10 200 0 0;
+                display foo 800 800;
             end;
         Unix.sleep 1;
         event_loop wx' wy'
