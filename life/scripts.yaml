@@ -1,0 +1,7 @@
+scripts:
+
+  compile: ocamlbuild -package graphics -package unix display.native
+ 
+  go: ./display.native
+
+  

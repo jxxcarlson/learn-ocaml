@@ -1,6 +1,5 @@
 (*
     https://ocaml.org/learn/tutorials/command-line_arguments.html
-    
     $ ocaml args.ml a b c
     [0] args.ml
     [1] a

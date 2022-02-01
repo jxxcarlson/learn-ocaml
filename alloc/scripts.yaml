@@ -1,0 +1,3 @@
+scripts:
+
+  alloc: ocaml alloc.ml assets.txt
