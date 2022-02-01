@@ -3,7 +3,7 @@
 type cell = Alive | Dead
 
 (** The type of a  grid of cells *)
-type grid
+type grid = cell list
 
 val rows : int
 
@@ -18,10 +18,18 @@ val getCell' :int -> int ->  grid -> cell
 
 val putCell : int -> int -> cell -> grid -> grid
 
+val putCell' : cell -> grid -> int -> grid
+
 val displayCell : (int * int) -> int -> int -> cell -> unit
 
 val display: grid -> int -> int -> unit
 
-(* val updateAt : int -> int -> grid -> grid *)
+val neighbors : int -> int -> grid -> grid
 
-(* val update : grid -> grid *)
+val updateAt : int -> int -> grid -> grid
+
+val updateAt' : grid -> int -> grid
+
+val update : grid -> grid
+
+val populate_grid : float ->  grid -> grid

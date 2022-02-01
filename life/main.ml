@@ -46,7 +46,8 @@ let rec event_loop wx wy =
         if wx' <> wx || wy' <> wy then 
             begin     
                 clear_window bgColor;
-                display grid 800 800;
+                display (populate_grid 0.5 grid |> update |> update) 800 800;
+
             end;
         Unix.sleep 1;
         event_loop wx' wy'
