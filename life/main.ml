@@ -3,13 +3,13 @@ open Grid
 
 (* COLORS *)
 let white = rgb 255 255 255
-let bgColor  = rgb 0 0 200
+let bgColor  = rgb 0 0 80
 let blue = rgb 0 0 255
 let red = rgb 255 0 0
 
 (* WINDOW DIMENSIONS *)
-let ww = 800
-let wh = 800
+let ww = 760
+let wh = 770
 
 let openWindowString w h = 
  String.concat "" [ " "; string_of_int w;  "x";  string_of_int h ];;
@@ -27,16 +27,13 @@ let clear_window color =
         set_color fg
 
 
-(* RENDERING  *)
+(* LIFE  *)
 
-let foo = Grid.init Dead 
+let grid = Grid.init Dead 
        |> putCell 15 15 Alive 
        |> putCell 10 10 Alive 
        |> putCell 0 0 Alive;;
 
-let render_circle x y radius r g b =  
-    set_color (rgb r g b);
-    fill_circle x y radius ;;
  
 (* PROGRAM *)
 
@@ -49,9 +46,7 @@ let rec event_loop wx wy =
         if wx' <> wx || wy' <> wy then 
             begin     
                 clear_window bgColor;
-                set_color white; 
-                render_circle (ww/2) (wh/2) 10 200 0 0;
-                display foo 800 800;
+                display grid 800 800;
             end;
         Unix.sleep 1;
         event_loop wx' wy'

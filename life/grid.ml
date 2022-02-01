@@ -6,9 +6,9 @@ type cell = Alive | Dead
 
 type grid = cell list
 
-let rows = 16
+let rows = 64
 
-let columns = 16
+let columns = 64
 
 let init cell = List.init (rows*columns) ~f:(fun _ -> cell)
 
