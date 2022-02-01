@@ -47,7 +47,7 @@ let address k =
   let j = k - columns * i in
   (i, j);;
 
-let display (grid:grid) (width:int) (height: int): unit =
+let display grid width height =
   let dx = width / columns in
   let dy = height / rows in
   List.iteri grid ~f:(fun i cell -> displayCell (address i) dx dy cell) 
