@@ -37,6 +37,7 @@ let grid = Grid.init Dead
  
 (* PROGRAM *)
 
+let world = populate_grid 0.5 grid
 
 let rec event_loop wx wy = 
     (* there's no resize event so polling in required *)
