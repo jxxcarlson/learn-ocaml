@@ -27,31 +27,17 @@ let clear_window color =
         set_color fg
 
 
-(* LIFE  *)
-
-let grid = Grid.init Dead 
-       |> putCell 15 15 Alive 
-       |> putCell 10 10 Alive 
-       |> putCell 0 0 Alive;;
-
- 
 (* PROGRAM *)
 
-let do_display world: unit = 
-   begin     
-        clear_window bgColor;
-        display (world |> update) 800 800;
-   end
 
+let world = populate_grid 0.9 (init Dead)
 
-let world = populate_grid 0.9 grid
-
-let run w n: unit =     
-    let w' = ref w 
+let run world n: unit =     
+    let w = ref world 
     in
     for i = 0 to n do 
-        w' := update !w'; 
-        display !w' 400 400;
+        w := update !w; 
+        display !w 400 400;
         Printf.printf "%d\n" i;
     done
 
