@@ -37,7 +37,9 @@ let run (world: grid) (n: int): unit =
     for i = 0 to n do 
         w := update !w; 
         display !w 400 400;
-        Printf.printf "%d\n" i;
+        set_color white;
+        moveto 10 10;
+        draw_string (string_of_int i);
     done
 
 let rec event_loop wx wy = 
