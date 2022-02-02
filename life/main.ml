@@ -29,18 +29,8 @@ let clear_window color =
 
 (* PROGRAM *)
 
-let world = populate_grid 0.8 (init Dead)
+let world = populate_grid 0.8 (init Dead) |> centered_around 32 32 16 
 
-let run (world: grid) (n: int): unit =     
-    let w = ref world 
-    in
-    for i = 0 to n do 
-        w := update !w; 
-        display !w 400 400;
-        set_color white;
-        moveto 10 10;
-        draw_string (string_of_int i);
-    done
 
 let rec event_loop wx wy = 
     (* there's no resize event so polling in required *)
@@ -48,7 +38,7 @@ let rec event_loop wx wy =
     and wx' = size_x () and wy' = size_y ()
     in 
         if wx' <> wx || wy' <> wy then 
-            run world 1000;
+            run world 100000;
         Unix.sleep 1;
         event_loop wx' wy'
 

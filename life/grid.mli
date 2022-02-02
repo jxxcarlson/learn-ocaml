@@ -26,10 +26,18 @@ val display: grid -> int -> int -> unit
 
 val neighbors : int -> int -> grid -> grid
 
-val updateAt : int -> int -> grid -> grid
+val updateAt : float -> int -> int -> grid -> grid
 
-val updateAt' : grid -> int -> grid
+val updateAt' : float -> grid -> int -> grid
 
 val update : grid -> grid
 
 val populate_grid : float ->  grid -> grid
+
+val centered_around: int -> int -> int -> grid -> grid
+
+val density : grid -> float
+
+val round_to : int -> float -> float
+
+val run : grid -> int -> unit 
