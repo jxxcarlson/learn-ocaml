@@ -31,7 +31,7 @@ let clear_window color =
 
 let world = populate_grid 0.8 (init Dead)
 
-let run world n: unit =     
+let run (world: grid) (n: int): unit =     
     let w = ref world 
     in
     for i = 0 to n do 
