@@ -37,7 +37,23 @@ let grid = Grid.init Dead
  
 (* PROGRAM *)
 
-let world = populate_grid 0.5 grid
+let do_display world: unit = 
+   begin     
+        clear_window bgColor;
+        display (world |> update) 800 800;
+   end
+
+
+let world = populate_grid 0.9 grid
+
+let run w n: unit =     
+    let w' = ref w 
+    in
+    for i = 0 to n do 
+        w' := update !w'; 
+        display !w' 400 400;
+        Printf.printf "%d\n" i;
+    done
 
 let rec event_loop wx wy = 
     (* there's no resize event so polling in required *)
@@ -45,17 +61,19 @@ let rec event_loop wx wy =
     and wx' = size_x () and wy' = size_y ()
     in 
         if wx' <> wx || wy' <> wy then 
-            begin     
+            (* begin     
                 clear_window bgColor;
                 display (world |> update) 800 800;
-            end;
+            end; *)
+            (* do_display world; *)
+            run world 1000;
         Unix.sleep 1;
         event_loop wx' wy'
 
 
 let () =
         open_window; 
-        try event_loop 800 800 ;
+        try event_loop 400 400 ;
         with Graphic_failure _ -> print_endline "Exiting..." 
 
 
