@@ -41,19 +41,28 @@ let world = populate_grid 0.5 grid
 
 let rec event_loop wx wy = 
     (* there's no resize event so polling in required *)
-    let _ = wait_next_event [Poll]
+    let _ = 1 (* wait_next_event [Poll] *)
     and wx' = size_x () and wy' = size_y ()
     in 
         if wx' <> wx || wy' <> wy then 
             begin     
                 clear_window bgColor;
-                display (populate_grid 0.5 grid |> update |> update) 800 800;
-
+                display (world |> update) 800 800;
             end;
         Unix.sleep 1;
         event_loop wx' wy'
 
+
 let () =
         open_window; 
-        try event_loop 0 0 ;
-        with Graphic_failure _ -> print_endline "Exiting..."
+        try event_loop 800 800 ;
+        with Graphic_failure _ -> print_endline "Exiting..." 
+
+
+(* let main () : unit = 
+   let rec loop world = 
+      display world;
+      let input = get_input () in
+      let menu = update menu input in
+      loop menu in
+   loop {selected=0; options=["A"; "B"; "C"]} *)
