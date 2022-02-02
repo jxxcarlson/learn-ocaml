@@ -8,15 +8,15 @@ let blue = rgb 0 0 255
 let red = rgb 255 0 0
 
 (* WINDOW DIMENSIONS *)
-let ww = 760
-let wh = 770
+let ww = 401
+let wh = 401
 
 let openWindowString w h = 
  String.concat "" [ " "; string_of_int w;  "x";  string_of_int h ];;
  
 let open_window = 
     open_graph (openWindowString ww wh);
-    set_window_title "Brownian Motion"  
+    set_window_title "Game of Life"  
 
 (* no way of setting background color; resizing shows white *)
 let clear_window color = 
@@ -46,11 +46,6 @@ let rec event_loop wx wy =
     and wx' = size_x () and wy' = size_y ()
     in 
         if wx' <> wx || wy' <> wy then 
-            (* begin     
-                clear_window bgColor;
-                display (world |> update) 800 800;
-            end; *)
-            (* do_display world; *)
             run world 1000;
         Unix.sleep 1;
         event_loop wx' wy'
@@ -60,12 +55,3 @@ let () =
         open_window; 
         try event_loop 400 400 ;
         with Graphic_failure _ -> print_endline "Exiting..." 
-
-
-(* let main () : unit = 
-   let rec loop world = 
-      display world;
-      let input = get_input () in
-      let menu = update menu input in
-      loop menu in
-   loop {selected=0; options=["A"; "B"; "C"]} *)
