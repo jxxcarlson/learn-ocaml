@@ -174,7 +174,7 @@ let run (world: grid) (n: int): unit =
     let w = ref world 
     in
     for i = 0 to n do 
-        w := update !w; 
+        (* w := update !w;  *)
         display !w 400 400;
         set_color white;
         moveto 10 10;
@@ -182,5 +182,4 @@ let run (world: grid) (n: int): unit =
         moveto 60 10;
         draw_string  (string_of_float (density !w |> round_to 3));
     done;
-
     

@@ -1,5 +1,5 @@
 open Graphics
-open Grid
+open Matrix
 
 (* COLORS *)
 let white = rgb 255 255 255
@@ -8,8 +8,8 @@ let blue = rgb 0 0 255
 let red = rgb 255 0 0
 
 (* WINDOW DIMENSIONS *)
-let ww = 401
-let wh = 401
+let ww = 800
+let wh = 800
 
 let openWindowString w h = 
  String.concat "" [ " "; string_of_int w;  "x";  string_of_int h ];;
@@ -29,7 +29,11 @@ let clear_window color =
 
 (* PROGRAM *)
 
-let world = populate_grid 0.8 (init Dead) |> centered_around 32 32 16 
+let world = init 0.0;;
+
+populate 0.2 world
+(* 
+let world = populate 0.8 (init 0.0) |> centered_around 32 32 16  *)
 
 
 let rec event_loop wx wy = 
