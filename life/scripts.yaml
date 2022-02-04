@@ -1,7 +1,7 @@
 scripts:
 
-  compile: ocamlbuild -package graphics -package unix display.native
+  compile: dune build ./main.exe
  
-  go: ./display.native
+  go: dune exec ./main.exe
 
   

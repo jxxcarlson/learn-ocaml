@@ -1,5 +1,6 @@
 open Graphics
 open Matrix
+open Base
 
 (* COLORS *)
 let white = rgb 255 255 255
@@ -12,7 +13,7 @@ let ww = 800
 let wh = 800
 
 let openWindowString w h = 
- String.concat "" [ " "; string_of_int w;  "x";  string_of_int h ];;
+ String.concat ~sep:"" [ " "; Int.to_string w;  "x";  Int.to_string h ];;
  
 let open_window = 
     open_graph (openWindowString ww wh);
@@ -50,4 +51,4 @@ let rec event_loop wx wy =
 let () =
         open_window; 
         try event_loop 400 400 ;
-        with Graphic_failure _ -> print_endline "Exiting..." 
+        with Graphic_failure _ -> Stdio.print_endline "Exiting..." 
