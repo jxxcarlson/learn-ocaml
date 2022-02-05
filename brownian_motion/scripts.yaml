@@ -1,6 +1,6 @@
 scripts:
 
-  compile: ocamlbuild -package graphics -package unix BrownianMotion2.native
+  compile: dune build ./brownian_motion.exe
  
-  go: ./BrownianMotion2.native
+  go: dune exec ./brownian_motion2.exe
 

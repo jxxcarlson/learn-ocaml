@@ -2,14 +2,11 @@ open Graphics
 
 (*  
 
-  Given a seed for the random number generator, this program
-  computes, then displyas, a Brownian path.
+  This program computes, then displyas, both a Brownian cloud and path.
 
   USAGE EXAMPLE:
 
-  $ ./BrownianMotion.native 194716 
-
-  where 194716 seeds the random number generator.
+  $ dune exec ./brownian_motion.exe
 
 *)
 
