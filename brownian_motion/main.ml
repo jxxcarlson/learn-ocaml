@@ -3,11 +3,11 @@ open Point
 
 (*  
 
-  This program computes, then displyas, both a Brownian cloud and path.
+  This program computes, then displays a Brownian cloud and path.
 
   USAGE EXAMPLE:
 
-  $ dune exec ./brownian_motion.exe
+  $ dune exec ./main.exe
 
 *)
 
@@ -25,10 +25,11 @@ let points_in_cloud = 3000;;
 let window_width = 800;;
 let window_height = 800;;
 
-(* Compute Brownian path *)
+(* Compute Brownian path and cloud *)
 let origin = {x = window_width/2; y = window_height/2; radius = 2; r = 125; g = 0; b = 125};;
 let center = {x = window_width/2; y = window_height/2; radius = 10; r = 160; g = 160; b = 210};;
 let path = Brownian.path origin step_size color_step_size number_of_steps;;
 let cloud = Brownian.cloud origin step_size color_step_size number_of_steps_in_cloud points_in_cloud;;
 
+(* Display the path and cloud *)
 Canvas.run (origin :: (List.append cloud path)) window_width window_height
