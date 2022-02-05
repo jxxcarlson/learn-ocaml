@@ -12,5 +12,5 @@ let render point =
     Graphics.set_color (Graphics.rgb point.r point.g point.b);
     Graphics.fill_circle point.x point.y point.radius ;;
  
-let render_list (points: point list) = 
-  List.iter render points;;
+let render_list points = 
+  List.iter render points;
