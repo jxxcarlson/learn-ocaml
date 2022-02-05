@@ -1,6 +1,6 @@
 scripts:
 
-  compile: dune build ./brownian_motion.exe
+  compile: dune build ./main.exe
  
-  go: dune exec ./brownian_motion2.exe
+  go: dune exec ./main.exe
 

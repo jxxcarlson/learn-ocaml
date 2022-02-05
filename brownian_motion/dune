@@ -1,4 +1,4 @@
 (executable
-  (name		brownian_motion2)
+  (name		main)
   (libraries    unix graphics)
 )
