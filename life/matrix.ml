@@ -8,16 +8,20 @@ type cell = float
 (** The type of a  matrix of cells *)
 type matrix = cell array array
 
+(* PARAMETERS *)
+
 let rows = 200
 let columns = 200
 
-let probability_of_birth = 0.08
+let probability_of_birth = 0.02 (* 0.08 *)
 
 let probability_of_death = 0.04
 
 let population_density_low = 0.4
 
 let population_density_high = 0.8
+
+(* FUNCTIONS *)
 
 let init cell = Array.make_matrix ~dimx:rows ~dimy:columns cell
 
