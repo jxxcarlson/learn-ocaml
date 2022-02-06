@@ -1,5 +1,6 @@
 open Graphics
 open Base
+open Life
 
 (* COLORS *)
 let white = rgb 255 255 255
@@ -24,16 +25,16 @@ let clear_window color =
     in
         set_color color;
         fill_rect 0 0 (size_x ()) (size_y ());
-        set_color fg
+        set_color fg;;
 
 
 (* PROGRAM *)
 
-let world = Life.init 0.0;;
-
-Life.populate 0.2 world
-(* 
-let world = populate 0.8 (init 0.0) |> centered_around 32 32 16  *)
+let initialData = { probability_of_birth = 0.02;
+                    probability_of_death = 0.00;
+                    population_density_low = 0.2;
+                    population_density_high = 0.3;
+                  }
 
 
 let rec event_loop wx wy = 
@@ -41,8 +42,7 @@ let rec event_loop wx wy =
     let _ = 1 (* wait_next_event [Poll] *)
     and wx' = size_x () and wy' = size_y ()
     in 
-        if wx' <> wx || wy' <> wy then 
-            Life.run world 100000;
+        if wx' <> wx || wy' <> wy then run initialData 100000;
         Unix.sleep 1;
         event_loop wx' wy'
 
