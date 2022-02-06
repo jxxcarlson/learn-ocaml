@@ -1,13 +1,14 @@
 open Matrix
 
-type initialData = { probability_of_birth :   float; 
-                     probability_of_death:    float;
-                     population_density_low:  float;
-                     population_density_high: float  }
+type data = { probability_of_birth :   float; 
+              probability_of_death:    float;
+              population_density_low:  float;
+              population_density_high: float;
+              steps : int  }
 
 (* a rows x columns matrix of a single cell value *)
-val init : initialData -> matrix
+val init : data -> matrix
 
-val update : initialData -> matrix -> unit
+val update : data -> matrix -> unit
 
-val run : initialData -> int -> unit
+val run : data -> unit

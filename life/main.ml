@@ -30,10 +30,11 @@ let clear_window color =
 
 (* PROGRAM *)
 
-let initialData = { probability_of_birth = 0.02;
+let data = { probability_of_birth = 0.02;
                     probability_of_death = 0.00;
                     population_density_low = 0.2;
                     population_density_high = 0.3;
+                    steps = 100_000;
                   }
 
 
@@ -42,7 +43,7 @@ let rec event_loop wx wy =
     let _ = 1 (* wait_next_event [Poll] *)
     and wx' = size_x () and wy' = size_y ()
     in 
-        if wx' <> wx || wy' <> wy then run initialData 100000;
+        if wx' <> wx || wy' <> wy then run data;
         Unix.sleep 1;
         event_loop wx' wy'
 

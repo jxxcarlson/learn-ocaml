@@ -2,11 +2,11 @@
 open Matrix
 open Base
 
-type initialData = { probability_of_birth :   float; 
-                     probability_of_death:    float;
-                     population_density_low:  float;
-                     population_density_high: float  }
-
+type data = { probability_of_birth :   float; 
+              probability_of_death:    float;
+              population_density_low:  float;
+              population_density_high: float;
+              steps : int  }
 
 
 
@@ -90,17 +90,17 @@ let update data m =
   done
  
 
- let run data n =  
+ let run data =  
     let 
       world = init data
     in   
-    for i = 0 to n do 
-        update data world; 
+    for i = 0 to data.steps do 
         display world 800 800;
         Graphics.set_color Graphics.white;
          Graphics.moveto 10 10;
          Graphics.draw_string (Int.to_string i);
          Graphics.moveto 60 10;
          Graphics.draw_string  (Float.to_string (density world |> round_to 3));
+         update data world; 
         (* Unix.sleep 1 *)
     done
