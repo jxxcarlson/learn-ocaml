@@ -8,13 +8,6 @@ type initialData = { probability_of_birth :   float;
                      population_density_high: float  }
 
 
-let probability_of_birth = 0.02 (* 0.08 *)
-
-let probability_of_death = 0.04
-
-let population_density_low = 0.4
-
-let population_density_high = 0.8
 
 
 (* let is_close i' j' i j r = 
@@ -51,15 +44,6 @@ let populate probability m  =
   done
 
 
- let updateAt' m i j m' = 
-   let e = env m i j in
-   match e with 
-    | 0.0 | 1.0  -> put 0.0 i j m'
-    | 2.0        -> put (get m i j) i j m'
-    | 3.0        -> put 1.0 i j m'
-    | _          -> put 0.0 i j m'
-
-
 let nextCell data density' m i j = 
   let r = Random.float 1.0  in
   let open Float.O
@@ -76,13 +60,13 @@ let nextCell data density' m i j =
         | _          -> 0.0
   
 
- let updateAt density m i j m' = 
+ (* let updateAt density m i j m' = 
    let r = Random.float 1.0  in
    let open Float.O
    in
    if r < probability_of_birth && density < population_density_low then put 1.0 i j m' 
    else if r < (probability_of_birth +. probability_of_death ) && density > population_density_high then put 0.0 i j m' 
-   else updateAt' m i j m'
+   else updateAt' m i j m' *)
 
 let init data = 
    let 
@@ -95,13 +79,13 @@ let init data =
    end
 
 
-let update m = 
+let update data m = 
  let m' = Array.copy m in
- let d = density m
+ let density' = density m
  in
   for i = 0 to (rows - 1) do 
     for j = 0 to (columns - 1) do 
-      updateAt d m' i j m
+      put (nextCell data density' m' i j) i j m'
     done
   done
  
@@ -111,7 +95,7 @@ let update m =
       world = init data
     in   
     for i = 0 to n do 
-        update world; 
+        update data world; 
         display world 800 800;
         Graphics.set_color Graphics.white;
          Graphics.moveto 10 10;
