@@ -15,9 +15,9 @@ let wh = 800
 let openWindowString w h = 
  String.concat ~sep:"" [ " "; Int.to_string w;  "x";  Int.to_string h ];;
  
-let open_window = 
+let open_window data = 
     open_graph (openWindowString ww wh);
-    set_window_title "Game of Life"  
+    set_window_title data.title 
 
 (* no way of setting background color; resizing shows white *)
 let clear_window color = 
@@ -35,6 +35,7 @@ let data = { probability_of_birth = 0.02;
                     population_density_low = 0.2;
                     population_density_high = 0.3;
                     steps = 100_000;
+                    title = "Game of Life"
                   }
 
 
@@ -49,6 +50,6 @@ let rec event_loop wx wy =
 
 
 let () =
-        open_window; 
+        open_window data; 
         try event_loop 400 400 ;
         with Graphic_failure _ -> Stdio.print_endline "Exiting..." 
