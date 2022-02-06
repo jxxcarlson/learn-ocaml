@@ -1,5 +1,4 @@
 open Graphics
-open Matrix
 open Base
 
 (* COLORS *)
@@ -30,9 +29,9 @@ let clear_window color =
 
 (* PROGRAM *)
 
-let world = init 0.0;;
+let world = Life.init 0.0;;
 
-populate 0.2 world
+Life.populate 0.2 world
 (* 
 let world = populate 0.8 (init 0.0) |> centered_around 32 32 16  *)
 
@@ -43,7 +42,7 @@ let rec event_loop wx wy =
     and wx' = size_x () and wy' = size_y ()
     in 
         if wx' <> wx || wy' <> wy then 
-            run world 100000;
+            Life.run world 100000;
         Unix.sleep 1;
         event_loop wx' wy'
 
