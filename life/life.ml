@@ -2,6 +2,8 @@
 open Matrix
 open Base
 
+type initialData = { probability_of_birth : float }
+
 let probability_of_birth = 0.02 (* 0.08 *)
 
 let probability_of_death = 0.04
