@@ -14,3 +14,5 @@ val init : data -> matrix
 val update : data -> matrix -> unit
 
 val run : data -> unit
+
+val data : data

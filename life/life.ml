@@ -11,6 +11,14 @@ type data = { probability_of_birth :   float;
               }
 
 
+let data = { probability_of_birth = 0.02;
+                    probability_of_death = 0.00;
+                    population_density_low = 0.2;
+                    population_density_high = 0.3;
+                    steps = 100_000;
+                    title = "Game of Life"
+                  }
+
 
 (* let is_close i' j' i j r = 
     abs(i - i') < r && abs (j - j') < r
