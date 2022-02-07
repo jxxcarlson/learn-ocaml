@@ -1,6 +1,6 @@
 
 open Base
-open Life
+open Heat
 
 
 (* WINDOW DIMENSIONS *)
@@ -31,7 +31,7 @@ let rec event_loop wx wy =
     let _ = 1 (* wait_next_event [Poll] *)
     and wx' = Graphics.size_x () and wy' = Graphics.size_y ()
     in 
-        if wx' <> wx || wy' <> wy then Life.run Life.data;
+        if wx' <> wx || wy' <> wy then run data;
         Unix.sleep 1;
         event_loop wx' wy'
 

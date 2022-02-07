@@ -4,4 +4,4 @@ scripts:
  
   go: dune exec ./main.exe
 
-  
+  cloc: cloc --by-file *.ml *.mli
