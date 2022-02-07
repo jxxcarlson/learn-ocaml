@@ -41,17 +41,6 @@ let density m =
   (sum m) /. (Float.of_int (rows*columns))
 
 
-let rec power x n = 
-  if n = 0 then 1.0
-    else x *. (power x (n - 1))
-
-let round_to n x = 
-  let factor = power 10.0 n in
-  let x = Float.round (factor *. x)
-  in x/.factor
-
-
-
 let display m displayCell width height =
   let dx = width / columns in
   let dy = height / rows in

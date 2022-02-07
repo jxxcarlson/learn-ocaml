@@ -19,6 +19,4 @@ val display: matrix -> displayCell -> int -> int -> unit
 
 val density : matrix -> float
 
-val round_to : int -> float -> float
-
 
