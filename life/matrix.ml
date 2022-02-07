@@ -7,6 +7,9 @@ type cell = float
 (** The type of a  matrix of cells *)
 type matrix = cell array array
 
+type displayCell = int -> int -> int -> int -> cell -> unit
+
+
 (* PARAMETERS *)
 
 let rows = 200
@@ -49,25 +52,7 @@ let round_to n x =
 
 
 
-let displayCell row column dx dy cell = 
-  let x = column*dx in
-  let y = row*dy in
-  let open Float.O in
-  if cell = 1.0 then 
-    begin
-     set_color red;
-     fill_rect x y dx dy
-    end
-  else
-    begin
-     set_color black;
-     fill_rect x y dx dy
-    end
-     ;;
-
-
-
-let display m width height =
+let display m displayCell width height =
   let dx = width / columns in
   let dy = height / rows in
   begin

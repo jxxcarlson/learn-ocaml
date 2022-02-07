@@ -91,14 +91,29 @@ let update data m =
     done
   done
  
+ let displayCellBlue row column dx dy cell = 
+  let x = column*dx in
+  let y = row*dy in
+  let open Float.O in
+  if cell = 1.0 then 
+    begin
+     Graphics.set_color Graphics.blue;
+     Graphics.fill_rect x y dx dy
+    end
+  else
+    begin
+     Graphics.set_color Graphics.black;
+     Graphics.fill_rect x y dx dy
+    end
+     ;;
 
  let run data =  
     let 
       world = init data
     in   
     for i = 0 to data.steps do 
-        display world 800 800;
-        Graphics.set_color Graphics.white;
+         Matrix.display world displayCellBlue 800 800;
+         Graphics.set_color Graphics.white;
          Graphics.moveto 10 10;
          Graphics.draw_string (Int.to_string i);
          Graphics.moveto 60 10;
