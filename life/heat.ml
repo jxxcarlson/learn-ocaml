@@ -1,5 +1,5 @@
 
-open Matrix
+
 open Base
 
 type data = { k : float;
@@ -10,7 +10,7 @@ type data = { k : float;
               }
 
 
-let data = {   k = 0.5;
+let data = {   k = 0.99;
                g = 0.0;
                radius = 50.0;
                steps = 100_000;
@@ -28,12 +28,12 @@ let round_to n x =
   in x/.factor
 
 
-let env m i j = 
-  (get m (i-1) j +. get m (i + 1) j +. get m i (j - 1) +. get m i (j + 1))/. 4.0
+let env m i j =
+  (  Matrix.get m (i + 1) j +. Matrix.get m i (j - 1) +. Matrix.get m i (j + 1)  )/.  4.0
 
 let gradSquared m i j = 
-  let dx = (get m (i + 1) j) -. (get m (i - 1) j) in
-  let dy = (get m i (j + 1)) -. (get m i (j - 1)) in
+  let dx = (Matrix.get m (i + 1) j) -. (Matrix.get m (i - 1) j) in
+  let dy = (Matrix.get m i (j + 1)) -. (Matrix.get m i (j - 1)) in
   dx*.dx +. dy*.dy
 
  let random_cell = 
@@ -41,17 +41,17 @@ let gradSquared m i j =
 
 
 let randomCellAt m i j = 
-  put random_cell i j m
+  Matrix.put random_cell i j m
 
 let populate data m  = 
  let m' = Array.copy m 
  in
-  for i = 0 to (rows - 1) do 
-    for j = 0 to (columns - 1) do 
+  for i = 0 to (Matrix.rows - 1) do 
+    for j = 0 to (Matrix.columns - 1) do 
       let d2 = 2*(i-100)*(i-100) + (j-100)*(j-100) in
       let r2 = Int.of_float (data.radius*.data.radius)
       in 
-      if d2 < r2  && d2 > 3*r2/4 then  put 1.0 i j m'
+      if d2 < r2  && d2 > 3*r2/4 then  Matrix.put 1.0 i j m'
       else 
         randomCellAt m' i j
     done
@@ -63,12 +63,12 @@ let nextCell data m i j =
    let
     open Float.O  
    in
-     data.k * (get m i j) + (1.0 - data.k)*(env m i j) + data.g*(gradSquared m  i j)
+     data.k * (Matrix.get m i j) + (1.0 - data.k)*(env m i j) + data.g*(gradSquared m  i j)
   
 
 let init data = 
    let 
-     m = Array.make_matrix ~dimx:rows ~dimy:columns 0.0;
+     m = Array.make_matrix ~dimx:Matrix.rows ~dimy:Matrix.columns 0.0;
    in 
    begin  
      populate data m;
@@ -79,9 +79,9 @@ let init data =
 let update data m = 
  let m' = Array.copy m
  in
-  for i = 0 to (rows - 1) do 
-    for j = 0 to (columns - 1) do 
-      put (nextCell data m' i j) i j m'
+  for i = 0 to (Matrix.rows - 1) do 
+    for j = 0 to (Matrix.columns - 1) do 
+      Matrix.put (nextCell data m' i j) i j m'
     done
   done
  
@@ -116,7 +116,7 @@ let update data m =
                 Graphics.moveto 10 20;
                 Graphics.draw_string (Int.to_string i);
                 Graphics.moveto 60 20;
-                Graphics.draw_string  (Float.to_string (density world |> round_to 4));
+                Graphics.draw_string  (Float.to_string (Matrix.density world |> round_to 4));
                 (* Graphics.synchronize(); 
                 Unix.sleep 1 *)
            end
