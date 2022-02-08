@@ -1,6 +1,6 @@
 
 open Base
-open Heat
+open Life
 
 
 (* WINDOW DIMENSIONS *)

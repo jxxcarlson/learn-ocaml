@@ -6,15 +6,17 @@ type data = { probability_of_birth :   float;
               probability_of_death:    float;
               population_density_low:  float;
               population_density_high: float;
+              early_epoch : int; 
               steps : int;
               title: string  
               }
 
 
-let data = { probability_of_birth = 0.02;
+let data = { probability_of_birth = 0.08;
                     probability_of_death = 0.00;
                     population_density_low = 0.2;
                     population_density_high = 0.3;
+                    early_epoch = 100;
                     steps = 100_000;
                     title = "Game of Life"
                   }
@@ -30,18 +32,6 @@ let round_to n x =
   let x = Float.round (factor *. x)
   in x/.factor
 
-
-(* let is_close i' j' i j r = 
-    abs(i - i') < r && abs (j - j') < r
-
-let centered_around i' j' r m = 
-  let m' = copy m in
-  for i = 0 to (rows - 1) do 
-    for j = 0 to (columns - 1) do 
-      if is_close i' j' i j r then put (get m' i j) i j m
-       else put 0.0 i j m
-    done
-  done *)
 
 let env m i j = 
  get m (i-1) j +. get m (i + 1) j +. get m i (j - 1) +. get m i (j + 1)
@@ -65,13 +55,11 @@ let populate probability m  =
   done
 
 
-let nextCell data density' m i j = 
+let nextCell t data density' m i j = 
   let r = Random.float 1.0  in
-  let open Float.O
-  in
-  if r < data.probability_of_birth && density' < data.population_density_low then 1.0
-   else if r < (data.probability_of_birth +. data.probability_of_death ) && density' > data.population_density_high then 0.0 
-   else 
+  if t < data.early_epoch &&  Float.O.(<) r  data.probability_of_birth &&  Float.O.(<) density' data.population_density_low then 1.0
+  else if t < data.early_epoch &&  Float.O.(<) r (data.probability_of_birth +. data.probability_of_death ) &&  Float.O.(<) density' data.population_density_high then 0.0 
+  else 
     let e = env m i j 
     in
     match e with 
@@ -80,15 +68,6 @@ let nextCell data density' m i j =
         | 3.0        -> 1.0
         | _          -> 0.0
   
-
- (* let updateAt density m i j m' = 
-   let r = Random.float 1.0  in
-   let open Float.O
-   in
-   if r < probability_of_birth && density < population_density_low then put 1.0 i j m' 
-   else if r < (probability_of_birth +. probability_of_death ) && density > population_density_high then put 0.0 i j m' 
-   else updateAt' m i j m' *)
-
 let init data = 
    let 
      m = Array.make_matrix ~dimx:rows ~dimy:columns 0.0;
@@ -100,13 +79,13 @@ let init data =
    end
 
 
-let update data m = 
+let update t data m = 
  let m' = Array.copy m in
  let density' = density m
  in
   for i = 0 to (rows - 1) do 
     for j = 0 to (columns - 1) do 
-      put (nextCell data density' m' i j) i j m'
+      put (nextCell t data density' m' i j) i j m'
     done
   done
  
@@ -137,6 +116,6 @@ let update data m =
          Graphics.draw_string (Int.to_string i);
          Graphics.moveto 60 10;
          Graphics.draw_string  (Float.to_string (density world |> round_to 3));
-         update data world; 
+         update i data world; 
         (* Unix.sleep 1 *)
     done

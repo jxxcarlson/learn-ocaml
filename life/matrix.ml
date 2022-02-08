@@ -1,5 +1,4 @@
 
-open Graphics
 open Base
 
 type cell = float
@@ -45,13 +44,13 @@ let display m displayCell width height =
   let dx = width / columns in
   let dy = height / rows in
   begin
-   auto_synchronize false;
+   (* auto_synchronize false; *)
    for i = 0 to (rows - 1) do 
       for j = 0 to (columns - 1) do 
         displayCell i j dx dy (get m i j)
       done
     done;
-   synchronize();
+   (* synchronize(); *)
    end
     
     
