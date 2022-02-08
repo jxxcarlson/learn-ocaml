@@ -11,7 +11,7 @@ type data = { k : float;
 
 
 let data = {   k = 0.5;
-               g = 0.26;
+               g = 0.0;
                radius = 50.0;
                steps = 100_000;
                title = "Heat Equation"
@@ -31,7 +31,7 @@ let round_to n x =
 let env m i j = 
   (get m (i-1) j +. get m (i + 1) j +. get m i (j - 1) +. get m i (j + 1))/. 4.0
 
-let grad m i j = 
+let gradSquared m i j = 
   let dx = (get m (i + 1) j) -. (get m (i - 1) j) in
   let dy = (get m i (j + 1)) -. (get m i (j - 1)) in
   dx*.dx +. dy*.dy
@@ -63,7 +63,7 @@ let nextCell data m i j =
    let
     open Float.O  
    in
-     data.k * (get m i j) + (1.0 - data.k)*(env m i j) + data.g*(grad m  i j)
+     data.k * (get m i j) + (1.0 - data.k)*(env m i j) + data.g*(gradSquared m  i j)
   
 
 let init data = 
