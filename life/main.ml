@@ -1,6 +1,6 @@
 
-open Base
 open Life
+
 
 
 (* WINDOW DIMENSIONS *)
@@ -8,6 +8,7 @@ let ww = 800
 let wh = 800
 
 let openWindowString w h = 
+let open Base in
  String.concat ~sep:"" [ " "; Int.to_string w;  "x";  Int.to_string h ];;
  
 let open_window data = 
@@ -39,4 +40,4 @@ let rec event_loop wx wy =
 let () =
         open_window data; 
         try event_loop 400 400 ;
-        with Graphics.Graphic_failure _ -> Stdio.print_endline "Exiting..." 
+        with Graphics.Graphic_failure _ -> Stdio.print_endline "... Exiting"

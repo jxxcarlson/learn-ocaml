@@ -10,9 +10,9 @@ type data = { probability_of_birth :   float;
               } 
 
 (* a rows x columns matrix of a single cell value *)
-val init : data -> matrix
+val init : data -> IntMatrix.t
 
-val update : int -> data -> matrix -> unit
+val update : int -> data -> IntMatrix.t -> unit
 
 val run : data -> unit
 
